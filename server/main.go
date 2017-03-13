@@ -3,20 +3,33 @@ package main
 import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"net/http"
+	"./api"
 )
 
 func main() {
 	e := echo.New()
+
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	// Route => handler
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!\n")
-	})
+	//CORS
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
+	}))
 
-	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	//static file serviing
+	e.Static("/static", "assets")
+
+	// Routers
+	e.POST("/", api.PostTest)
+	e.GET("/", api.PostTest)
+	//e.GET("/users/:id", controllers.ShowUser)
+	//e.GET("/users", controllers.AllUsers)
+	//e.PUT("/users/:id", controllers.UpdateUser)
+	//e.DELETE("/users/:id",controllers.DeleteUser)
+
+	// Server
+	e.Start(":1323")
 }
