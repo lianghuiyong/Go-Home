@@ -18,5 +18,5 @@ func PostTest(c echo.Context) error{
 
 	baseMovie := data.BaseResponse{http.StatusOK, "success", movies}
 
-	return c.JSONPretty(http.StatusOK, baseMovie,"  ")
+	return c.JSONPretty(http.StatusOK, baseMovie,"    ")
 }
