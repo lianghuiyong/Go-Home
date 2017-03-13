@@ -24,7 +24,6 @@ func main() {
 
 	// Routers
 	e.POST("/", api.PostTest)
-	e.GET("/", api.PostTest)
 	//e.GET("/users/:id", controllers.ShowUser)
 	//e.GET("/users", controllers.AllUsers)
 	//e.PUT("/users/:id", controllers.UpdateUser)
