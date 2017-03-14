@@ -4,10 +4,18 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"./api"
+	"net/http"
+	"log"
+	"io/ioutil"
 )
 
 func main() {
 	e := echo.New()
+
+	//启动时获取一次数据到本地数据库
+	resp, _ := http.Get(api.StationNameURL)
+	body, _ := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
 
 	// Middleware
 	e.Use(middleware.Logger())
@@ -23,7 +31,7 @@ func main() {
 	e.Static("/static", "assets")
 
 	// Routers
-	e.POST("/", api.PostTest)
+	e.POST("/stations", api.PostTest)
 	//e.GET("/users/:id", controllers.ShowUser)
 	//e.GET("/users", controllers.AllUsers)
 	//e.PUT("/users/:id", controllers.UpdateUser)
