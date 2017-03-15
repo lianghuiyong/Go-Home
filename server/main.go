@@ -4,19 +4,16 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"./api"
-	"net/http"
-	"log"
-	"io/ioutil"
+	"./db"
+	"fmt"
 )
 
-func main() {
+func initGoHome()  {
+	db.InitStations()
+}
+
+func startEcho()  {
 	e := echo.New()
-
-	//启动时获取一次数据到本地数据库
-	resp, _ := http.Get(api.StationNameURL)
-	body, _ := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
-
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -31,7 +28,7 @@ func main() {
 	e.Static("/static", "assets")
 
 	// Routers
-	e.POST("/stations", api.PostTest)
+	e.POST("/getstations", api.GetStationNames)
 	//e.GET("/users/:id", controllers.ShowUser)
 	//e.GET("/users", controllers.AllUsers)
 	//e.PUT("/users/:id", controllers.UpdateUser)
@@ -39,4 +36,14 @@ func main() {
 
 	// Server
 	e.Start(":1323")
+}
+
+func main() {
+
+	fmt.Println("数据库初始化...")
+	db.SqlInit()
+	initGoHome()
+
+	fmt.Println("正在开启服务器...")
+	startEcho()
 }
