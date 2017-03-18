@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-//noinspection GoUnusedExportedFunction
+// 初始化车站信息
 func InitStations()  {
 	resp, _ := http.Get(api.StationNameURL)
 	body, _ := ioutil.ReadAll(resp.Body)

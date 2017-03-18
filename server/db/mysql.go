@@ -33,4 +33,5 @@ func SqlInit()  {
 
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.RegisterDataBase("default", "mysql", dns)
+	orm.RunSyncdb("default", false, true)
 }
