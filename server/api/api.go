@@ -4,37 +4,33 @@ import (
 	"../data"
 	"github.com/labstack/echo"
 	"net/http"
-	"io/ioutil"
-	"strings"
+	"github.com/astaxie/beego/orm"
 )
 
 //noinspection GoUnusedExportedFunction
-func PostTest(c echo.Context) error{
+func GetStations(c echo.Context) error{
 
-	movies := []data.MovieBean{
-		{"金刚狼", "2017", []string{"休·杰克曼", "达芙妮·基恩", "帕特里克·斯图尔特"}},
-		{"极限特工", "2017", []string{"范·迪塞尔", "露比·罗丝", "妮娜·杜波夫"}},
-		{"功夫瑜伽", "2017", []string{"成龙", "李治廷", "张艺兴"}},
-		{"生化危机：终章", "2017", []string{"米拉·乔沃维奇", "伊恩·格雷", "艾丽·拉特"}},
+	listStations := []data.StationBean{}
+
+	o := orm.NewOrm()
+	qs := o.QueryTable("station_bean")
+	var posts []*data.StationBean
+	qs.Limit(3000, 0).All(&posts)
+
+	for _, val := range posts {
+		listStations = append(listStations, *val)
 	}
 
-	baseMovie := data.BaseResponse{http.StatusOK, "success", movies}
+	baseMovie := data.BaseResponse{http.StatusOK, "success", listStations}
 
 	return c.JSONPretty(http.StatusOK, baseMovie,"    ")
 }
 
-
-
 //noinspection GoUnusedExportedFunction
-func GetStationNames(c echo.Context) error{
-	resp, _ := http.Get(StationNameURL)
-	body, _ := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
+func Test(c echo.Context) error{
 
-	timBody1 := strings.Trim(string(body),"var station_names ='")
-	timBody2 := strings.Trim(timBody1,"';\n")
 
-	baseMovie := data.BaseResponse{http.StatusOK, "success", timBody2}
+	baseMovie := data.BaseResponse{http.StatusOK, "success", "hello"}
 
 	return c.JSONPretty(http.StatusOK, baseMovie,"    ")
 }

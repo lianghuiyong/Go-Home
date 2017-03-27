@@ -9,9 +9,11 @@ import (
 	"fmt"
 	"github.com/labstack/gommon/log"
 	"crypto/tls"
+	"github.com/astaxie/beego/orm"
 )
 
 // 初始化车站信息
+//noinspection GoUnusedExportedFunction
 func InitStations()  {
 	client := newClient()
 
@@ -28,17 +30,25 @@ func InitStations()  {
 		return
 	}
 
+	fmt.Println(">>>>更新数据库车站信息...")
 
 	timBody1 := strings.Trim(string(body),"var station_names ='")
 	timBody2 := strings.Trim(timBody1,"';\n")
 
 	split1 := strings.Split(timBody2,"@")
 
+	//获取orm
+	o := orm.NewOrm()
+	//清空表
+	res, err := o.Raw("TRUNCATE TABLE station_bean").Exec()
+	if err == nil {
+		fmt.Println(">>>> station_bean 表已清空！",res)
+	}
+
 	for _, value := range split1 {
 
 		split2 := strings.Split(value,"|")
-
-		if len(split2)>0 {
+		if len(split2)>1 {
 			station := data.StationBean{}
 			for  i:=0; i < len(split2); i++ {
 				switch i {
@@ -62,9 +72,12 @@ func InitStations()  {
 					break
 				}
 			}
-			fmt.Println(station)
+
+			// 插入表
+			o.Insert(&station)
 		}
 	}
+	fmt.Println(">>>>更新数据库车站完成！")
 }
 
 
