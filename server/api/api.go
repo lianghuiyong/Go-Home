@@ -15,7 +15,7 @@ func GetStations(c echo.Context) error{
 	o := orm.NewOrm()
 	qs := o.QueryTable("station_bean")
 	var posts []*data.StationBean
-	qs.Limit(3000, 0).All(&posts)
+	qs.Limit(10000, 0).All(&posts)
 
 	for _, val := range posts {
 		listStations = append(listStations, *val)

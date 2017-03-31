@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"./api"
 	"./db"
+	"./function"
 
 	//导入MySQL驱动
 	_ "github.com/go-sql-driver/mysql"
@@ -13,7 +14,7 @@ import (
 
 func initGoHome() {
 	db.InitMySQL()
-	db.InitStations()
+	function.InitStations()
 }
 
 func startEcho() {
