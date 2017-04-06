@@ -3,19 +3,18 @@ package function
 import (
 	"io/ioutil"
 	"strings"
-	"net/http"
 	"../api"
 	"../data"
+	"../utils"
 	"fmt"
 	"github.com/labstack/gommon/log"
-	"crypto/tls"
 	"github.com/astaxie/beego/orm"
 )
 
 // 初始化车站信息
 //noinspection GoUnusedExportedFunction
 func InitStations() {
-	client := newClient()
+	client := utils.NewClient()
 
 	resp, err := client.Get(api.StationNameURL)
 	if err != nil {
@@ -83,11 +82,5 @@ func InitStations() {
 	fmt.Println(">>>> 更新数据库车站完成！")
 }
 
-//解决 x509 未认证的验证问题
-func newClient() *http.Client {
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	return &http.Client{Transport: tr}
-}
+
 

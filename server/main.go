@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"./api"
 	"./db"
 	"./function"
 
@@ -33,8 +32,8 @@ func startEcho() {
 	e.Static("/static", "assets")
 
 	// Routers
-	e.POST("/stations", api.GetStations)
-	e.POST("/test", api.Test)
+	e.GET("/stations", function.GetStations)
+	e.POST("/leftTicket", function.GetLeftTicket)
 	//e.GET("/users/:id", controllers.ShowUser)
 	//e.GET("/users", controllers.AllUsers)
 	//e.PUT("/users/:id", controllers.UpdateUser)
@@ -47,7 +46,7 @@ func startEcho() {
 func main() {
 
 	fmt.Println(">>>>数据库初始化...")
-	initGoHome()
+	//initGoHome()
 
 	fmt.Println(">>>>正在开启服务器...")
 	startEcho()
